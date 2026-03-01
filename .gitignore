@@ -1,0 +1,28 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local node environment
+node_modules
+
+#IntelliJ files
+.idea
+
+# Frontend static files
+# Populated by running 'npm run build'
+static
+# Populated by running 'python manage.py collectstatic'
+staticfiles
+
+# Claude local settings
+.claude/
+
+# Environment variables
+.env
