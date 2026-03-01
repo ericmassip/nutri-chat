@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - NutriChat{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="card shadow-sm" style="width: 100%; max-width: 400px;">
+        <div class="card-body p-4">
+            <h1 class="h3 mb-4 text-center">NutriChat</h1>
+
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                Your username and password didn't match. Please try again.
+            </div>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                <div class="alert alert-warning" role="alert">
+                    Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.
+                </div>
+                {% else %}
+                <div class="alert alert-info" role="alert">
+                    Please login to see this page.
+                </div>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Username</label>
+                    <input type="text" 
+                           class="form-control{% if form.username.errors %} is-invalid{% endif %}" 
+                           name="username" 
+                           id="id_username" 
+                           autofocus 
+                           autocomplete="username"
+                           required>
+                    {% if form.username.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">Password</label>
+                    <input type="password" 
+                           class="form-control{% if form.password.errors %} is-invalid{% endif %}" 
+                           name="password" 
+                           id="id_password" 
+                           autocomplete="current-password"
+                           required>
+                    {% if form.password.errors %}
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}{{ error }}{% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+
+            <p class="text-center mb-0">
+                <a href="{% url 'password_reset' %}">Forgot password?</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
