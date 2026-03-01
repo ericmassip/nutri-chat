@@ -151,7 +151,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 DJANGO_VITE = {
