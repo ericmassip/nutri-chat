@@ -23,7 +23,62 @@ NutriChat allows nutritionists to upload their clients' nutritional plans in var
 🚧 In Planning Phase - Architecture and features are still being defined.
 
 ### Getting Started
+
 Documentation for setup and installation will be added as the project develops.
+
+#### Running the Application
+
+You have two options for serving static files:
+
+**Option 1: Development mode (recommended for development)**
+```bash
+# Terminal 1: Start Vite dev server with hot reload
+npm run dev
+
+# Terminal 2: Start Django server
+python manage.py runserver
+```
+
+**Option 2: Production-like mode**
+```bash
+# Build static files and collect them
+npm run build
+python manage.py collectstatic
+
+# Start Django server
+python manage.py runserver
+```
+
+#### Testing on Other Devices (Same WiFi Network)
+
+To test the app on any device connected to the same WiFi network as your laptop:
+
+1. Build and collect static files (required - Vite dev server isn't accessible from other devices):
+   ```bash
+   npm run build
+   python manage.py collectstatic
+   ```
+
+2. Find your laptop's local IP address:
+   ```bash
+   # macOS/Linux
+   ipconfig getifaddr en0
+   ```
+
+3. Run Django server with `0.0.0.0` to accept connections from any IP:
+   ```bash
+   python manage.py runserver 0.0.0.0:8000
+   ```
+
+4. Update `ALLOWED_HOSTS` in `webappconf/settings.py`:
+   ```python
+   ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'your-local-ip']
+   ```
+
+5. Access the app from any device on your network:
+   ```
+   http://your-local-ip:8000
+   ```
 
 ---
 

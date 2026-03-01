@@ -1,0 +1,21 @@
+{
+  "name": "nutri-chat",
+  "version": "1.0.0",
+  "description": "A web application that enables nutritionists to share nutritional plans with their clients through an interactive chat interface.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "sass": "^1.97.3",
+    "vite": "^7.3.1"
+  }
+}
