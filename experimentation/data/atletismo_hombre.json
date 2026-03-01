@@ -1,0 +1,285 @@
+{
+  "plan": "PLAN_NUTRICIONAL_ATLETISMO_HOMBRE",
+  "questions": [
+    {
+      "question": "¿Cuántos gramos de pan debo comer en el desayuno?",
+      "answer": "100"
+    },
+    {
+      "question": "¿Cuál es la medida casera equivalente de pan para el desayuno?",
+      "answer": "2 rebanadas pan de payés medianas, aprox. un palmo de barra de pan"
+    },
+    {
+      "question": "¿Cuántos gramos de jamón serrano debo comer en el desayuno?",
+      "answer": "100"
+    },
+    {
+      "question": "¿Cuántas lonchas de jamón equivalen a la porción de desayuno?",
+      "answer": "5"
+    },
+    {
+      "question": "¿Cuántos gramos de pavo debo comer en el desayuno?",
+      "answer": "100"
+    },
+    {
+      "question": "¿Cuántas lonchas de pavo equivalen a la porción de desayuno?",
+      "answer": "5"
+    },
+    {
+      "question": "¿Cuál es el mínimo porcentaje de carne que deberían tener las lonchas de pavo?",
+      "answer": "85"
+    },
+    {
+      "question": "¿Cuántos huevos debo comer en el desayuno?",
+      "answer": "3 unidades / 1 huevo y 2 claras (cocidas)"
+    },
+    {
+      "question": "¿Cuánto aceite de oliva está contemplado en el desayuno?",
+      "answer": "1 cucharada de postre de AOVE"
+    },
+    {
+      "question": "¿Con qué bebida debería acompañar el desayuno?",
+      "answer": "Agua"
+    },
+    {
+      "question": "¿Cuántos vasos de agua debería tomar en el desayuno?",
+      "answer": "1 como mínimo, idealmente 2"
+    },
+    {
+      "question": "¿Cuántas piezas de fruta debería tomar a media mañana?",
+      "answer": "1"
+    },
+    {
+      "question": "¿Cuántas tortitas de maíz o arroz hinchado debo comer a media mañana?",
+      "answer": "3"
+    },
+    {
+      "question": "¿Cuántos gramos de proteína debo tomar en el batido de media mañana?",
+      "answer": "25"
+    },
+    {
+      "question": "¿En cuántos ml de agua debo disolver el batido de proteína de media mañana?",
+      "answer": "250-300"
+    },
+    {
+      "question": "¿Cuántos gramos de patata o boniato debo comer en la comida?",
+      "answer": "300"
+    },
+    {
+      "question": "¿Cuál es la medida casera equivalente de patata para la comida?",
+      "answer": "1 patata grande / 1 boniato mediano"
+    },
+    {
+      "question": "¿Cuántos gramos de arroz o pasta en crudo debo comer en la comida?",
+      "answer": "110"
+    },
+    {
+      "question": "¿Cuántos gramos de arroz cocido equivalen a la porción de la comida?",
+      "answer": "220"
+    },
+    {
+      "question": "¿Cuál es la medida casera aproximada de arroz para la comida?",
+      "answer": "Aproximadamente 1,5 vaso de arroz estilo brillante"
+    },
+    {
+      "question": "¿Cuántos gramos de pan extra debo añadir los días de entreno más fuerte en la comida?",
+      "answer": "20"
+    },
+    {
+      "question": "¿Cuántos gramos de legumbres debo comer en la comida?",
+      "answer": "280"
+    },
+    {
+      "question": "Si como legumbres en la comida, ¿qué fracción del grupo de carbohidratos es suficiente?",
+      "answer": "1/3"
+    },
+    {
+      "question": "Si quiero comer legumbres y patata en la comida, ¿cuántos gramos de patata debería comer?",
+      "answer": "100"
+    },
+    {
+      "question": "Si quiero comer legumbres y boniato en la comida, ¿cuántos gramos de boniato debería comer?",
+      "answer": "100"
+    },
+    {
+      "question": "Si quiero comer legumbres y arroz en la comida, ¿cuántos gramos de arroz debería comer?",
+      "answer": "37"
+    },
+    {
+      "question": "¿Cuántos gramos de pescado debo comer en la comida?",
+      "answer": "180"
+    },
+    {
+      "question": "¿Cuántas latas de caballa equivalen a la porción de pescado para la comida?",
+      "answer": "2"
+    },
+    {
+      "question": "¿Cuántas gambas equivalen a la porción de pescado para la comida?",
+      "answer": "18"
+    },
+    {
+      "question": "¿Cuántos gramos de carne debo comer en la comida?",
+      "answer": "150"
+    },
+    {
+      "question": "¿Cuántos filetes de lomo equivalen a la porción de carne para la comida?",
+      "answer": "4"
+    },
+    {
+      "question": "¿Cuántos gramos de huevo debo comer en la comida?",
+      "answer": "180"
+    },
+    {
+      "question": "¿Cuántas unidades de huevo debo comer en la comida?",
+      "answer": "3 unidades / 1 huevo + 2 claras"
+    },
+    {
+      "question": "¿Qué porción del plato deben ocupar las hortalizas en la comida?",
+      "answer": "Medio plato llano"
+    },
+    {
+      "question": "¿Cuánto aceite de oliva está contemplado en la comida?",
+      "answer": "1 cucharada sopera de AOVE"
+    },
+    {
+      "question": "¿Cuántos gramos de aguacate están contemplados como alternativa al aceite en la comida?",
+      "answer": "60"
+    },
+    {
+      "question": "¿Qué frutas se recomienda priorizar como postre de la comida?",
+      "answer": "Mandarina, naranja o frutas cítricas"
+    },
+    {
+      "question": "¿Cuántos ml de isotónica debo tomar los lunes y jueves durante el entreno?",
+      "answer": "300"
+    },
+    {
+      "question": "¿A los cuántos minutos debo añadir el gel de carbohidratos en los días de entreno de saltos?",
+      "answer": "30"
+    },
+    {
+      "question": "¿Cuántos gramos de carbohidratos contiene el gel para los días de entreno de saltos?",
+      "answer": "30"
+    },
+    {
+      "question": "¿Cuántos gramos de proteína debo tomar en el batido post-entreno?",
+      "answer": "25"
+    },
+    {
+      "question": "¿En cuántos ml de agua debo disolver el batido post-entreno?",
+      "answer": "250"
+    },
+    {
+      "question": "Los días que no entreno, ¿cuántos gramos de yogur proteico puedo tomar como alternativa?",
+      "answer": "250"
+    },
+    {
+      "question": "Los días que no entreno, ¿cuántas piezas de fruta puedo tomar como alternativa?",
+      "answer": "2"
+    },
+    {
+      "question": "¿Cuántos gramos de patata o boniato debo comer en la cena?",
+      "answer": "300"
+    },
+    {
+      "question": "¿Cuántos gramos de arroz o pasta en crudo debo comer en la cena?",
+      "answer": "110"
+    },
+    {
+      "question": "¿Cuántos gramos de quinoa en crudo debo comer en la cena?",
+      "answer": "110"
+    },
+    {
+      "question": "¿Cuántas fajitas integrales debo comer en la cena?",
+      "answer": "3"
+    },
+    {
+      "question": "¿Cuántos gramos de pescado debo comer en la cena?",
+      "answer": "180"
+    },
+    {
+      "question": "¿Cuántos gramos de carne debo comer en la cena?",
+      "answer": "150"
+    },
+    {
+      "question": "¿Cuántos gramos de huevo debo comer en la cena?",
+      "answer": "180"
+    },
+    {
+      "question": "¿Qué porción del plato deben ocupar las hortalizas en la cena?",
+      "answer": "Medio plato llano"
+    },
+    {
+      "question": "¿Cuánto aceite de oliva está contemplado en la cena?",
+      "answer": "1 cucharada sopera de AOVE"
+    },
+    {
+      "question": "¿Cuántos gramos de aguacate están contemplados como alternativa al aceite en la cena?",
+      "answer": "60"
+    },
+    {
+      "question": "¿Cuántos gramos de yogur natural o kéfir debo tomar como postre de la cena?",
+      "answer": "125"
+    },
+    {
+      "question": "¿Qué frutas se recomienda potenciar como postre de la cena?",
+      "answer": "Arándanos, frutos rojos y/o kiwi"
+    },
+    {
+      "question": "¿Si quiero mezclar pollo y lomo en la comida, cuántos gramos totales debería comer?",
+      "answer": "150"
+    },
+    {
+      "question": "¿Puedo usar aceite de girasol para cocinar?",
+      "answer": "No"
+    },
+    {
+      "question": "¿Puedo usar aceite de girasol en un sandwich?",
+      "answer": "No"
+    },
+    {
+      "question": "¿Puedo comerme un pedazo de pastel cada dos días o así?",
+      "answer": "No"
+    },
+    {
+      "question": "¿Cuántos platos de legumbres debería ingerir a la semana como mínimo?",
+      "answer": "2"
+    },
+    {
+      "question": "¿Qué es indispensable para mantener la masa muscular a parte de la nutrición?",
+      "answer": "El ejercicio de fuerza"
+    },
+    {
+      "question": "¿Cuántos gramos de aislado de proteína de suero de leche debo tomar?",
+      "answer": "25"
+    },
+    {
+      "question": "¿Cuándo debo tomar el aislado de proteína de suero de leche?",
+      "answer": "a media mañana + post entreno"
+    },
+    {
+      "question": "¿Cuántas perlas de omega 3 debo tomar al día?",
+      "answer": "3"
+    },
+    {
+      "question": "¿Cuándo debo tomar las perlas de omega 3?",
+      "answer": "Con la comida"
+    },
+    {
+      "question": "¿Hasta cuándo debo suspender el monohidrato de creatina?",
+      "answer": "Hasta el día de la competición"
+    },
+    {
+      "question": "¿Cuántos platos de legumbres a la semana se recomienda como mínimo?",
+      "answer": "2"
+    },
+    {
+      "question": "¿Qué tipo de hidratos de carbono se priorizan en las comidas sin entreno cercano?",
+      "answer": "Integrales"
+    },
+    {
+      "question": "¿Qué tipo de hidratos de carbono se toman cuando hay entreno en menos de 5 horas?",
+      "answer": "Blancos"
+    }
+  ]
+}
