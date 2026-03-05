@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_vite',
     'nutrichat',
+    'markdownx',
 ]
 
 # Custom user model

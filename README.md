@@ -14,6 +14,7 @@ NutriChat allows nutritionists to upload their clients' nutritional plans in var
 
 ### Tech Stack
 
+* Package manager: uv
 * Backend: Django
 * Frontend: HTMX
 * AI/Chat: LangGraph
