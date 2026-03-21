@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from markdownx.models import MarkdownxField
 
 
 class UserManager(BaseUserManager):
@@ -95,6 +96,18 @@ class Customer(models.Model):
         on_delete=models.CASCADE,
         related_name='customers'
     )
+    description = MarkdownxField(blank=True)
 
     def __str__(self):
         return f"{self.user.username}"
+
+
+class Attachment(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='attachments'
+    )
+    file = models.FileField(upload_to='attachments/%Y-%m/')
+    created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
