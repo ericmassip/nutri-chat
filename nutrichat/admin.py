@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from nutrichat.models import User
+from nutrichat.models import Attachment, User
 
 
 class UserCreationForm(forms.ModelForm):
@@ -37,6 +37,12 @@ class UserChangeForm(forms.ModelForm):
         fields = ["username", "password", "name", "surname", "role", "nutritionist", "description", "is_active", "is_admin"]
 
 
+class AttachmentInline(admin.TabularInline):
+    model = Attachment
+    extra = 0
+    readonly_fields = ["created", "last_updated"]
+
+
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
@@ -54,6 +60,7 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ["username", "name", "surname"]
     ordering = ["username"]
     filter_horizontal = []
+    inlines = [AttachmentInline]
 
 
 admin.site.register(User, UserAdmin)
