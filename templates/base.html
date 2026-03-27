@@ -34,18 +34,22 @@
             </div>
 
             <ul class="nav nav-pills flex-column mb-auto">
+                {% if request.user.role == "CUSTOMER" %}
                 <li class="nav-item">
                     <a href="#" class="nav-link text-white d-flex align-items-center gap-2">
                         <span class="material-symbols-outlined">person</span>
                         My Profile
                     </a>
                 </li>
+                {% endif %}
+                {% if request.user.role == "NUTRITIONIST" %}
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white d-flex align-items-center gap-2">
+                    <a href="{% url 'customers' %}" class="nav-link text-white d-flex align-items-center gap-2">
                         <span class="material-symbols-outlined">group</span>
                         Customers
                     </a>
                 </li>
+                {% endif %}
             </ul>
 
             <hr class="my-3 border-light opacity-25">
@@ -60,6 +64,10 @@
             </ul>
 
             <div class="mt-auto">
+                <a href="{% url 'password_change' %}" class="nav-link text-white d-flex align-items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined">lock</span>
+                    Change password
+                </a>
                 <form action="{% url 'logout' %}" method="post" class="d-inline">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-link text-white text-decoration-none p-0 nav-link d-flex align-items-center gap-2">
@@ -72,6 +80,18 @@
         {% endif %}
 
         <main class="main-content col-md-9 col-lg-10 p-4 overflow-auto">
+            {# Messages from the django messages framework will be displayed here #}
+            {% if messages %}
+            <div class="mb-3">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             {% block content %}{% endblock %}
         </main>
     </div>

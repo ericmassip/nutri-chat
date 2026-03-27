@@ -4,32 +4,24 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from nutrichat.models import User, Nutritionist, Customer
+from nutrichat.models import User
 
 
 class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
-
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label="Password confirmation", widget=forms.PasswordInput
-    )
+    password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ["username"]
+        fields = "__all__"
 
     def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
+        p1, p2 = self.cleaned_data.get("password1"), self.cleaned_data.get("password2")
+        if p1 and p2 and p1 != p2:
             raise ValidationError("Passwords don't match")
-        return password2
+        return p2
 
     def save(self, commit=True):
-        # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
@@ -38,69 +30,30 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    disabled password hash display field.
-    """
-
     password = ReadOnlyPasswordHashField()
 
     class Meta:
         model = User
-        fields = ["username", "password", "is_active", "is_admin"]
+        fields = ["username", "password", "name", "surname", "role", "nutritionist", "description", "is_active", "is_admin"]
 
 
 class UserAdmin(BaseUserAdmin):
-    # The forms to add and change user instances
     form = UserChangeForm
     add_form = UserCreationForm
-
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserAdmin
-    # that reference specific fields on auth.User.
-    list_display = ["username", "is_admin", "is_active"]
-    list_filter = ["is_admin", "is_active"]
+    list_display = ["username", "name", "surname", "role", "nutritionist", "is_active", "is_admin"]
+    list_filter = ["role", "is_active"]
     fieldsets = [
         (None, {"fields": ["username", "password"]}),
-        ("Permissions", {"fields": ["is_admin", "is_active"]}),
+        ("Personal info", {"fields": ["name", "surname"]}),
+        ("Role", {"fields": ["role", "nutritionist", "description"]}),
+        ("Permissions", {"fields": ["is_active", "is_admin"]}),
     ]
-    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
-    # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = [
-        (
-            None,
-            {
-                "classes": ["wide"],
-                "fields": ["username", "password1", "password2"],
-            },
-        ),
+        (None, {"classes": ["wide"], "fields": ["username", "role", "nutritionist", "password1", "password2"]}),
     ]
-    search_fields = ["username"]
+    search_fields = ["username", "name", "surname"]
     ordering = ["username"]
     filter_horizontal = []
 
 
 admin.site.register(User, UserAdmin)
-
-
-class CustomerInline(admin.TabularInline):
-    model = Customer
-    extra = 0
-    fields = ['user']
-    readonly_fields = []
-
-
-class NutritionistAdmin(admin.ModelAdmin):
-    list_display = ['user']
-    search_fields = ['user__username']
-    inlines = [CustomerInline]
-
-
-class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['user', 'nutritionist']
-    list_filter = ['nutritionist']
-    search_fields = ['user__username', 'nutritionist__user__username']
-
-
-admin.site.register(Nutritionist, NutritionistAdmin)
-admin.site.register(Customer, CustomerAdmin)

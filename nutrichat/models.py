@@ -19,13 +19,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, password=None, **extra_fields):
-        """Superusers have no type"""
+        # Superusers have no role
         extra_fields.setdefault("is_admin", True)
         return self.create_user(username, password, **extra_fields)
 
 
 class User(AbstractBaseUser):
-    class UserType(models.TextChoices):
+    class Role(models.TextChoices):
         NUTRITIONIST = "NUTRITIONIST", "Nutritionist"
         CUSTOMER = "CUSTOMER", "Customer"
 
@@ -34,6 +34,18 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+    name = models.CharField(max_length=150, blank=True)
+    surname = models.CharField(max_length=150, blank=True)
+    role = models.CharField(max_length=20, choices=Role, blank=True)
+    nutritionist = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='customers',
+        limit_choices_to={'role': Role.NUTRITIONIST},
+    )
+    description = MarkdownxField(blank=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
@@ -47,66 +59,21 @@ class User(AbstractBaseUser):
         return self.username
 
     def has_perm(self, perm, obj=None):
-        """Does the user have a specific permission?"""
         return True
 
     def has_module_perms(self, app_label):
-        """Does the user have permissions to view the app `app_label`?"""
         return True
 
     @property
     def is_staff(self):
-        """Is the user a member of staff?"""
         return self.is_admin
-
-    @property
-    def type(self):
-        """Derives user type from profile existence"""
-        if hasattr(self, 'nutritionist'):
-            return self.UserType.NUTRITIONIST
-        elif hasattr(self, 'customer'):
-            return self.UserType.CUSTOMER
-        return None
-
-    @property
-    def profile(self):
-        """Returns the user's profile based on their type"""
-        return getattr(self, 'nutritionist', None) or getattr(self, 'customer', None)
-
-
-class Nutritionist(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='nutritionist',
-    )
-
-    def __str__(self):
-        return f"{self.user.username}"
-
-
-class Customer(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='customer',
-    )
-    nutritionist = models.ForeignKey(
-        Nutritionist,
-        on_delete=models.CASCADE,
-        related_name='customers'
-    )
-    description = MarkdownxField(blank=True)
-
-    def __str__(self):
-        return f"{self.user.username}"
 
 
 class Attachment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='attachments'
+        related_name='attachments',
     )
     file = models.FileField(upload_to='attachments/%Y-%m/')
     created = models.DateTimeField(auto_now_add=True)

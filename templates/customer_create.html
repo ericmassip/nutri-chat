@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}New Customer — NutriChat{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2>New Customer</h2>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    {% crispy form %}
+    <button type="submit" class="btn btn-primary mt-2">Create</button>
+</form>
+{% endblock %}
