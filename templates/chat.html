@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Chat - NutriChat{% endblock %}
+
+{% partialdef send-response %}
+  {% load static %}
+  
+  {% with content=message_text %}
+    {% partial message-user %}
+  {% endwith %}
+
+  <div class="message-row assistant-row" hx-ext="sse" sse-connect="{% url 'chat-stream' conversation.pk %}"
+       sse-close="done">
+    <div class="message-avatar assistant-avatar">
+      <span class="material-symbols-outlined">nutrition</span>
+    </div>
+    <div class="message-bubble assistant-bubble">
+      <img class="typing-indicator" src="{% static 'svg/three-dots.svg' %}" width="40" alt="Loading...">
+      <span class="streaming-content" sse-swap="token" hx-swap="beforeend"></span>
+      <div class="markdown-rendered" sse-swap="done" hx-swap="innerHTML"></div>
+    </div>
+  </div>
+
+  {% if is_conversation_new %}
+    {% with oob=True %}{% partial chat-form %}{% endwith %}
+
+    <div id="conversation-list" hx-swap-oob="innerHTML">
+      {% partial conversation-list %}
+    </div>
+  {% endif %}
+
+  <div id="empty-state" hx-swap-oob="delete"></div>
+{% endpartialdef %}
+
+{% block sidebar_chat %}
+  <div class="d-flex align-items-center justify-content-between mb-2">
+    <a href="{% url 'chat' %}"
+       class="nav-link text-white d-flex align-items-center gap-2 py-1 px-2 flex-grow-1">
+      <span class="material-symbols-outlined">add_comment</span>
+      New Chat
+    </a>
+  </div>
+  <div id="conversation-list" class="sidebar-conversations">
+    {% partialdef conversation-list inline %}
+      {% for conv in conversations %}
+        <a href="{% url 'chat-conversation' conv.pk %}"
+           class="sidebar-conversation-item {% if conversation and conversation.pk == conv.pk %}active{% endif %}">
+          <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
+          <span class="text-truncate">{{ conv.title|default:"New conversation" }}</span>
+        </a>
+      {% empty %}
+        <p class="text-white-50 small px-2">No conversations yet.</p>
+      {% endfor %}
+    {% endpartialdef %}
+  </div>
+{% endblock sidebar_chat %}
+
+{% block content %}
+  <div class="chat-container">
+    <div class="chat-main">
+      <div id="chat-messages" class="chat-messages">
+        {% if not messages_list %}
+          <div id="empty-state" class="d-flex align-items-center justify-content-center h-100 text-muted">
+            <div class="text-center">
+              <span class="material-symbols-outlined" style="font-size: 48px;">chat_bubble_outline</span>
+              <p class="mt-2">Send a message to start the conversation.</p>
+            </div>
+          </div>
+
+        {% else %}
+          {% for msg in messages_list %}
+            {% if msg.type == "human" %}
+              {% with content=msg.content %}
+                {% partialdef message-user inline %}
+                  <div class="message-row user-row">
+                    <div class="message-bubble user-bubble">{{ content }}</div>
+                    <div class="message-avatar user-avatar">
+                      <span class="material-symbols-outlined">person</span>
+                    </div>
+                  </div>
+                {% endpartialdef %}
+              {% endwith %}
+
+            {% elif msg.type == "ai" %}
+              <div class="message-row assistant-row">
+                <div class="message-avatar assistant-avatar">
+                  <span class="material-symbols-outlined">nutrition</span>
+                </div>
+                <div class="message-bubble assistant-bubble">{{ msg.content_html|safe }}</div>
+              </div>
+            {% endif %}
+
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="chat-input-area">
+        {% partialdef chat-form inline %}
+          <form id="chat-form"{% if oob %} hx-swap-oob="outerHTML"{% endif %}
+                hx-post="{% if conversation %}{% url 'chat-send-existing' conversation.pk %}{% else %}{% url 'chat-send' %}{% endif %}"
+                hx-target="#chat-messages"
+                hx-swap="beforeend"
+                hx-on::after-request="this.querySelector('textarea').value = ''">
+            {% csrf_token %}
+            <div class="input-group">
+              <textarea name="message"
+                        class="form-control chat-input"
+                        placeholder="Type your message..."
+                        rows="1"
+                        required></textarea>
+              <button type="submit" class="btn btn-success">
+                <span class="material-symbols-outlined">send</span>
+              </button>
+            </div>
+          </form>
+        {% endpartialdef %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

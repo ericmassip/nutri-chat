@@ -54,14 +54,16 @@
 
             <hr class="my-3 border-light opacity-25">
 
+            {% block sidebar_chat %}
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white d-flex align-items-center gap-2">
+                    <a href="{% url 'chat' %}" class="nav-link text-white d-flex align-items-center gap-2">
                         <span class="material-symbols-outlined">chat</span>
                         Chat
                     </a>
                 </li>
             </ul>
+            {% endblock sidebar_chat %}
 
             <div class="mt-auto">
                 <a href="{% url 'password_change' %}" class="nav-link text-white d-flex align-items-center gap-2 mb-2">
