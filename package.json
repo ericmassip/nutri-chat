@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "htmx-ext-sse": "^2.2.4",
+    "htmx.org": "^2.0.8"
   },
   "devDependencies": {
     "sass": "^1.97.3",

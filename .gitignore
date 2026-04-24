@@ -15,6 +15,9 @@ node_modules
 #IntelliJ files
 .idea
 
+# Media directory for attachments, photos, etc uploaded to the website
+media
+
 # Frontend static files
 # Populated by running 'npm run build'
 static
