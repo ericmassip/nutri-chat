@@ -31,13 +31,20 @@ Documentation for setup and installation will be added as the project develops.
 
 You have two options for serving static files:
 
+**Environment variables:**
+
+Create a `.env` file in the project root:
+```bash
+GOOGLE_API_KEY=your-google-api-key
+```
+
 **Option 1: Development mode (recommended for development)**
 ```bash
 # Terminal 1: Start Vite dev server with hot reload
 npm run dev
 
-# Terminal 2: Start Django server
-python manage.py runserver
+# Terminal 2: Start Django ASGI server
+uvicorn webappconf.asgi:application --host 0.0.0.0 --port 8000 --reload
 ```
 
 **Option 2: Production-like mode**
@@ -46,9 +53,12 @@ python manage.py runserver
 npm run build
 python manage.py collectstatic
 
-# Start Django server
-python manage.py runserver
+# Start Django ASGI server
+uvicorn webappconf.asgi:application --host 0.0.0.0 --port 8000
 ```
+
+> **Note:** The chat feature uses async views with SSE streaming, which requires an ASGI server.
+> `python manage.py runserver` (WSGI) still works for non-chat pages, but `uvicorn` is needed for full functionality.
 
 #### Testing on Other Devices (Same WiFi Network)
 
@@ -66,9 +76,9 @@ To test the app on any device connected to the same WiFi network as your laptop:
    ipconfig getifaddr en0
    ```
 
-3. Run Django server with `0.0.0.0` to accept connections from any IP:
+3. Run the ASGI server with `0.0.0.0` to accept connections from any IP:
    ```bash
-   python manage.py runserver 0.0.0.0:8000
+   uvicorn webappconf.asgi:application --host 0.0.0.0 --port 8000
    ```
 
 4. Update `ALLOWED_HOSTS` in `webappconf/settings.py`:
