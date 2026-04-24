@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
-from nutrichat.models import Attachment, User
+from nutrichat.models import Attachment, Conversation, User
 
 
 class UserCreationForm(forms.ModelForm):
@@ -64,3 +64,11 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(Conversation)
+class ConversationAdmin(admin.ModelAdmin):
+    list_display = ['title', 'user', 'created', 'last_updated']
+    list_filter = ['created']
+    search_fields = ['title', 'user__username']
+    raw_id_fields = ['user']

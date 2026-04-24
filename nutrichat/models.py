@@ -1,7 +1,12 @@
+import base64
+import logging
+
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from markdownx.models import MarkdownxField
+
+log = logging.getLogger(__name__)
 
 
 class UserManager(BaseUserManager):
@@ -69,6 +74,26 @@ class User(AbstractBaseUser):
         return self.is_admin
 
 
+class Conversation(models.Model):
+    """Conversation between user and LLM. The checkpoints of the conversation are stored in the tables managed by
+    Langraph via AsyncPostgresSaver. The id of the conversation is used to match the thread_id in the graph config, but
+    deleting a Conversation does not cascade to LangGraph checkpoint data; cleanup must be handled manually."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='conversations',
+    )
+    title = models.CharField(max_length=255, blank=True)  # Auto-generated from first message
+    created = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-last_updated']
+
+    def __str__(self):
+        return self.title or f"Conversation {self.pk}"
+
+
 class Attachment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -78,3 +103,11 @@ class Attachment(models.Model):
     file = models.FileField(upload_to='attachments/%Y-%m/')
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
+
+    def read_as_base64(self) -> str | None:
+        try:
+            with self.file.open('rb') as f:
+                return base64.b64encode(f.read()).decode('utf-8')
+        except Exception:
+            log.exception(f"Failed to read attachment {self.file} (id={self.id}) for user={self.user.username}")
+            return None
