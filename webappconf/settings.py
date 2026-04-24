@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
-from sys import stdout
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'servestatic',
     'django_vite',
     'nutrichat',
     'markdownx',
@@ -54,6 +59,7 @@ AUTH_USER_MODEL = 'nutrichat.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'servestatic.middleware.ServeStaticMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -82,6 +88,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'webappconf.wsgi.application'
+ASGI_APPLICATION = 'webappconf.asgi.application'
+
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY', '')
+
+MARKDOWNX_MARKDOWN_EXTENSIONS = ['tables']
 
 
 DATABASES = {
@@ -99,19 +110,26 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "verbose": {"format": "%(asctime)s pid:%(process)d %(levelname)s in %(module)s %(message)s"},
-        "simple": {"format": "%(levelname)s %(message)s"},
+        "verbose": {
+            "format": "{asctime} pid:{process:d} {levelname} in {module}: {message}",
+            "style": "{",
+        },
     },
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
-        "console": {"level": "INFO", "class": "logging.StreamHandler", "stream": stdout, "formatter": "verbose"},
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
     },
     "loggers": {
-        "": {  # This should capture all logs as the root logger
+        "django": {
             "handlers": ["console"],
-            "filters": [],
-            "propagate": True,
             "level": "INFO",
+            "propagate": False,
         },
     },
 }
