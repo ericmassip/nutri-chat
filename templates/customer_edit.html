@@ -34,6 +34,7 @@
 
     {% crispy form %}
 
+    {% if attachment or form.file %}
     <div class="mb-4">
         <label class="form-label fw-semibold">Nutritional plan (PDF)</label>
         {% if attachment %}
@@ -46,11 +47,14 @@
               </a>
           </div>
         {% endif %}
-        {{ form.file }}
-        {% if form.file.errors %}
-          <div class="text-danger small mt-1">{{ form.file.errors }}</div>
+        {% if form.file %}
+            {{ form.file }}
+            {% if form.file.errors %}
+              <div class="text-danger small mt-1">{{ form.file.errors }}</div>
+            {% endif %}
         {% endif %}
     </div>
+    {% endif %}
 
     <button type="submit" class="btn btn-primary">Save</button>
 </form>

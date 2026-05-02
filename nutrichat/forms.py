@@ -19,12 +19,6 @@ def validate_pdf_content_type(file):
 
 
 class CustomerEditForm(forms.ModelForm):
-    file = forms.FileField(
-        required=False,
-        validators=[FileExtensionValidator(['pdf']), validate_pdf_content_type],
-        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
-    )
-
     class Meta:
         model = User
         fields = ['name', 'surname', 'description']
@@ -32,8 +26,15 @@ class CustomerEditForm(forms.ModelForm):
             'description': MarkdownxWidget(),
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, editor=None, **kwargs):
         super().__init__(*args, **kwargs)
+        # Customers cannot change their own plan, only their nutritionist can
+        if editor != self.instance or not self.instance.nutritionist_id:
+            self.fields['file'] = forms.FileField(
+                required=False,
+                validators=[FileExtensionValidator(['pdf']), validate_pdf_content_type],
+                widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}),
+            )
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(

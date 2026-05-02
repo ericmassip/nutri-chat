@@ -13,6 +13,8 @@ from nutrichat.models import User
 
 
 def home_view(request):
+    if request.user.role == User.Role.NUTRITIONIST:
+        return redirect('customers')
     return render(request, 'home.html')
 
 
@@ -62,6 +64,11 @@ class ProfileEditView(SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         return self.request.path
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['editor'] = self.request.user
+        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
