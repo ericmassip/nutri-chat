@@ -8,7 +8,7 @@ from django.views.generic import CreateView, UpdateView
 import django_tables2 as tables
 
 from nutrichat.forms import CustomerCreateForm, CustomerEditForm
-from nutrichat.mixins import CustomerEditAccessMixin, NutritionistOwnsCustomerMixin, NutritionistRequiredMixin
+from nutrichat.mixins import NutritionistOwnsCustomerMixin, NutritionistRequiredMixin
 from nutrichat.models import User
 
 
@@ -19,7 +19,7 @@ def home_view(request):
 class CustomerTable(tables.Table):
     name = tables.Column()
     surname = tables.Column()
-    username = tables.LinkColumn("customer-edit", kwargs={"pk": tables.A("pk")}, accessor="username", verbose_name="Email")
+    username = tables.LinkColumn("customer-edit", kwargs={"id": tables.A("pk")}, accessor="username", verbose_name="Email")
     plan = tables.Column(empty_values=(), orderable=False, verbose_name="Plan")
 
     def render_plan(self, record):
@@ -42,22 +42,27 @@ class CustomerTable(tables.Table):
         attrs = {"class": "table table-striped"}
 
 
-class CustomerEditView(SuccessMessageMixin, CustomerEditAccessMixin, UpdateView):
+class ProfileEditView(SuccessMessageMixin, UpdateView):
     model = User
     form_class = CustomerEditForm
     template_name = "customer_edit.html"
     success_message = "%(name)s %(surname)s was updated successfully"
 
-    def get_queryset(self):
-        return User.objects.filter(role=User.Role.CUSTOMER)
+    def get_object(self, queryset=None):
+        return self.request.user
 
     def get_success_url(self):
-        return reverse('customer-edit', kwargs={'pk': self.object.pk})
+        return self.request.path
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['attachment'] = self.object.attachments.first()
         return context
+
+
+class CustomerEditView(NutritionistOwnsCustomerMixin, ProfileEditView):
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, pk=self.kwargs['id'], role=User.Role.CUSTOMER)
 
 
 class CustomerCreateView(NutritionistRequiredMixin, SuccessMessageMixin, CreateView):
@@ -72,12 +77,12 @@ class CustomerCreateView(NutritionistRequiredMixin, SuccessMessageMixin, CreateV
         return kwargs
 
     def get_success_url(self):
-        return reverse('customer-edit', kwargs={'pk': self.object.pk})
+        return reverse('customer-edit', kwargs={'id': self.object.pk})
 
 
 class CustomerRemoveView(NutritionistOwnsCustomerMixin, View):
-    def post(self, request, pk):
-        customer = get_object_or_404(User, pk=pk, role=User.Role.CUSTOMER)
+    def post(self, request, id):
+        customer = get_object_or_404(User, pk=id, role=User.Role.CUSTOMER)
         customer.is_active = False
         customer.save()
         return redirect(reverse('customers'))

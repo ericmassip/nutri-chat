@@ -17,22 +17,9 @@ class NutritionistOwnsCustomerMixin(UserPassesTestMixin):
     """
 
     def test_func(self):
-        pk = self.kwargs['pk']
+        customer_id = self.kwargs['id']
         user = self.request.user
         return (
             user.role == User.Role.NUTRITIONIST
-            and user.customers.filter(pk=pk).exists()
+            and user.customers.filter(pk=customer_id).exists()
         )
-
-
-class CustomerEditAccessMixin(NutritionistOwnsCustomerMixin):
-    """
-    Grants access if the logged-in user IS the customer, or is a nutritionist
-    who owns the customer. Returns 403 otherwise.
-    """
-
-    def test_func(self):
-        user = self.request.user
-        if user.role == User.Role.CUSTOMER and user.pk == self.kwargs['pk']:
-            return True
-        return super().test_func()
