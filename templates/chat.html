@@ -99,7 +99,7 @@
           <form id="chat-form"{% if oob %} hx-swap-oob="outerHTML"{% endif %}
                 hx-post="{% if conversation %}{% url 'chat-send-existing' conversation.pk %}{% else %}{% url 'chat-send' %}{% endif %}"
                 hx-target="#chat-messages"
-                hx-swap="beforeend"
+                hx-swap="beforeend scroll:bottom"
                 hx-on::after-request="this.querySelector('textarea').value = ''">
             {% csrf_token %}
             <div class="input-group">
@@ -117,4 +117,44 @@
       </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      function scrollChatToBottom() {
+        const container = document.getElementById('chat-messages')
+        if (container) container.scrollTop = container.scrollHeight
+      }
+
+      // Wait for fonts to settle so message-row heights are final before we scroll.
+      window.addEventListener('load', () => document.fonts.ready.then(scrollChatToBottom))
+
+      // On each SSE message: drop the typing indicator, and on the final `done` event
+      // hide the raw streaming span so only the markdown-rendered version remains visible.
+      document.body.addEventListener('htmx:sseMessage', (event) => {
+        const bubble = event.target.closest('.assistant-bubble')
+        if (bubble) {
+          const indicator = bubble.querySelector('.typing-indicator')
+          if (indicator) indicator.remove()
+
+          if (event.detail.type === 'done') {
+            const streaming = bubble.querySelector('.streaming-content')
+            if (streaming) streaming.style.display = 'none'
+          }
+        }
+
+        scrollChatToBottom()
+      })
+
+      // Chat-style Enter handling: Enter submits the form, Shift+Enter falls through as a newline.
+      document.addEventListener('keydown', (e) => {
+        if (e.target.matches('.chat-input') && e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault()
+          const form = e.target.closest('form')
+          if (form && e.target.value.trim()) {
+            window.htmx.trigger(form, 'submit')
+          }
+        }
+      })
+    })()
+  </script>
 {% endblock %}
