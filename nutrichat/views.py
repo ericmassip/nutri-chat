@@ -19,8 +19,9 @@ def home_view(request):
 class CustomerTable(tables.Table):
     name = tables.Column()
     surname = tables.Column()
-    username = tables.LinkColumn("customer-edit", kwargs={"id": tables.A("pk")}, accessor="username", verbose_name="Email")
+    username = tables.Column()
     plan = tables.Column(empty_values=(), orderable=False, verbose_name="Plan")
+    edit = tables.Column(empty_values=(), orderable=False, verbose_name="Edit")
 
     def render_plan(self, record):
         attachment = record.attachments.first()
@@ -35,9 +36,17 @@ class CustomerTable(tables.Table):
             '<span class="material-symbols-outlined" style="font-size:20px; color:#ccc;">description</span>',
         )
 
+    def render_edit(self, record):
+        return format_html(
+            '<a href="{}" style="color: var(--verde-eucalipto);">'
+            '<span class="material-symbols-outlined" style="font-size:20px;">edit</span>'
+            '</a>',
+            reverse('customer-edit', kwargs={'id': record.pk}),
+        )
+
     class Meta:
         model = User
-        fields = ("name", "surname", "username", "plan")
+        fields = ("name", "surname", "username", "plan", "edit")
         empty_text = "No customers yet."
         attrs = {"class": "table table-striped"}
 
