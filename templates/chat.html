@@ -16,8 +16,7 @@
     </div>
     <div class="message-bubble assistant-bubble">
       <img class="typing-indicator" src="{% static 'svg/three-dots.svg' %}" width="40" alt="Loading...">
-      <span class="streaming-content" sse-swap="token" hx-swap="beforeend"></span>
-      <div class="markdown-rendered" sse-swap="done" hx-swap="innerHTML"></div>
+      <div class="streaming-content" sse-swap="token" hx-swap="innerHTML"></div>
     </div>
   </div>
 
@@ -128,18 +127,12 @@
       // Wait for fonts to settle so message-row heights are final before we scroll.
       window.addEventListener('load', () => document.fonts.ready.then(scrollChatToBottom))
 
-      // On each SSE message: drop the typing indicator, and on the final `done` event
-      // hide the raw streaming span so only the markdown-rendered version remains visible.
+      // Drop the typing indicator on the first SSE message.
       document.body.addEventListener('htmx:sseMessage', (event) => {
         const bubble = event.target.closest('.assistant-bubble')
         if (bubble) {
           const indicator = bubble.querySelector('.typing-indicator')
           if (indicator) indicator.remove()
-
-          if (event.detail.type === 'done') {
-            const streaming = bubble.querySelector('.streaming-content')
-            if (streaming) streaming.style.display = 'none'
-          }
         }
 
         scrollChatToBottom()

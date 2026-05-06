@@ -1,5 +1,4 @@
 import logging
-from html import escape
 
 from asgiref.sync import sync_to_async
 from django.http import HttpResponseBadRequest, StreamingHttpResponse
@@ -126,13 +125,12 @@ class ChatStreamView(View):
                                 )
                             if content:
                                 full_response.append(content)
-                                token = escape(content)
-                                yield f"event: token\ndata: {token}\n\n"
+                                rendered = markdownify("".join(full_response))
+                                # SSE data must be single-line; multi-line needs each line prefixed with "data: "
+                                sse_data = rendered.replace("\n", "\ndata: ")
+                                yield f"event: token\ndata: {sse_data}\n\n"
 
-                    rendered = markdownify("".join(full_response))
-                    # SSE data must be single-line; multi-line needs each line prefixed with "data: "
-                    sse_data = rendered.replace("\n", "\ndata: ")
-                    yield f"event: done\ndata: {sse_data}\n\n"
+                    yield "event: done\ndata: \n\n"
                 except Exception as e:
                     log.exception(f"Streaming error in conv_id={conv_id}. Error: {e}")
                     yield "event: error\ndata: An error occurred during streaming\n\n"
