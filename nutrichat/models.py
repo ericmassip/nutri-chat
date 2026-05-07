@@ -43,12 +43,12 @@ class User(AbstractBaseUser):
     surname = models.CharField(max_length=150, blank=True)
     role = models.CharField(max_length=20, choices=Role, blank=True)
     nutritionist = models.ForeignKey(
-        'self',
+        "self",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='customers',
-        limit_choices_to={'role': Role.NUTRITIONIST},
+        related_name="customers",
+        limit_choices_to={"role": Role.NUTRITIONIST},
     )
     description = MarkdownxField(blank=True)
     is_active = models.BooleanField(default=True)
@@ -78,17 +78,20 @@ class Conversation(models.Model):
     """Conversation between user and LLM. The checkpoints of the conversation are stored in the tables managed by
     Langraph via AsyncPostgresSaver. The id of the conversation is used to match the thread_id in the graph config, but
     deleting a Conversation does not cascade to LangGraph checkpoint data; cleanup must be handled manually."""
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='conversations',
+        related_name="conversations",
     )
-    title = models.CharField(max_length=255, blank=True)  # Auto-generated from first message
+    title = models.CharField(
+        max_length=255, blank=True
+    )  # Auto-generated from first message
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-last_updated']
+        ordering = ["-last_updated"]
 
     def __str__(self):
         return self.title or f"Conversation {self.pk}"
@@ -98,16 +101,18 @@ class Attachment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='attachments',
+        related_name="attachments",
     )
-    file = models.FileField(upload_to='attachments/%Y-%m/')
+    file = models.FileField(upload_to="attachments/%Y-%m/")
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
     def read_as_base64(self) -> str | None:
         try:
-            with self.file.open('rb') as f:
-                return base64.b64encode(f.read()).decode('utf-8')
+            with self.file.open("rb") as f:
+                return base64.b64encode(f.read()).decode("utf-8")
         except Exception:
-            log.exception(f"Failed to read attachment {self.file} (id={self.id}) for user={self.user.username}")
+            log.exception(
+                f"Failed to read attachment {self.file} (id={self.id}) for user={self.user.username}"
+            )
             return None

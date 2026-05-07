@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g8+881gq3n0!kbo^b$g2+qgam=8pt!z3&=3qn6lp!ef149!j=6'
+SECRET_KEY = "django-insecure-g8+881gq3n0!kbo^b$g2+qgam=8pt!z3&=3qn6lp!ef149!j=6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,63 +36,63 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'servestatic',
-    'django_vite',
-    'nutrichat',
-    'markdownx',
-    'django_tables2',
-    'crispy_forms',
-    'crispy_bootstrap5',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "servestatic",
+    "django_vite",
+    "nutrichat",
+    "markdownx",
+    "django_tables2",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Custom user model
-AUTH_USER_MODEL = 'nutrichat.User'
+AUTH_USER_MODEL = "nutrichat.User"
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'servestatic.middleware.ServeStaticMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.LoginRequiredMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "servestatic.middleware.ServeStaticMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.auth.middleware.LoginRequiredMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'webappconf.urls'
+ROOT_URLCONF = "webappconf.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'webappconf.wsgi.application'
-ASGI_APPLICATION = 'webappconf.asgi.application'
+WSGI_APPLICATION = "webappconf.wsgi.application"
+ASGI_APPLICATION = "webappconf.asgi.application"
 
-GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY', '')
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
-MARKDOWNX_MARKDOWN_EXTENSIONS = ['tables']
+MARKDOWNX_MARKDOWN_EXTENSIONS = ["tables"]
 
 
 DATABASES = {
@@ -140,22 +140,22 @@ LOGGING = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 
 # INTERNATIONALISATION
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = "en"
 LANGUAGES = [
     ("en", "English"),
     ("es", "Spanish"),
@@ -169,22 +169,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "static",
 ]
 
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "media/"
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 DJANGO_VITE = {
-    'default': {
-        'dev_mode': DEBUG,
+    "default": {
+        "dev_mode": DEBUG,
     }
 }

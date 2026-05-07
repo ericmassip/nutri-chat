@@ -17,7 +17,7 @@ class NutritionistOwnsCustomerMixin(UserPassesTestMixin):
     """
 
     def test_func(self):
-        customer_id = self.kwargs['id']
+        customer_id = self.kwargs["id"]
         user = self.request.user
         return (
             user.role == User.Role.NUTRITIONIST

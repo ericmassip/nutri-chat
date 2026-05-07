@@ -27,6 +27,7 @@ async def get_conversation(user, conv_id=None):
 class ChatView(View):
     """View for rendering the chat interface. Users that open the chat page make a request to this view. If the
     conversation is not new, it fetches the conversation's messages from the db."""
+
     async def get(self, request, conv_id=None):
         messages_list = []
         conversation = await get_conversation(request.user, conv_id)
@@ -48,28 +49,45 @@ class ChatView(View):
                                 part if isinstance(part, str) else part.get("text", "")
                                 for part in content
                             )
-                        content_html = markdownify(content) if msg.type == "ai" else content
-                        messages_list.append({"type": msg.type, "content": content, "content_html": content_html})
+                        content_html = (
+                            markdownify(content) if msg.type == "ai" else content
+                        )
+                        messages_list.append(
+                            {
+                                "type": msg.type,
+                                "content": content,
+                                "content_html": content_html,
+                            }
+                        )
 
-        return render(request, 'chat.html', {
-            'conversation': conversation,
-            'conversations': [c async for c in request.user.conversations.all()],
-            'messages_list': messages_list,
-        })
+        return render(
+            request,
+            "chat.html",
+            {
+                "conversation": conversation,
+                "conversations": [c async for c in request.user.conversations.all()],
+                "messages_list": messages_list,
+            },
+        )
 
 
 class ChatSendView(View):
     """View for handling user messages. The message is sent to the LangGraph model and the response is rendered."""
+
     async def post(self, request, conv_id=None):
-        message_text = request.POST.get('message', '').strip()
+        message_text = request.POST.get("message", "").strip()
         if not message_text:
-            return HttpResponseBadRequest(f"{request.user.username} sent a message but the message was empty. "
-                                          f"conv_id={conv_id}, message={message_text}")
+            return HttpResponseBadRequest(
+                f"{request.user.username} sent a message but the message was empty. "
+                f"conv_id={conv_id}, message={message_text}"
+            )
 
         conversation = await get_conversation(request.user, conv_id)
         is_conversation_new = False
         if not conversation:
-            conversation = await Conversation.objects.acreate(user=request.user, title=message_text[:50])
+            conversation = await Conversation.objects.acreate(
+                user=request.user, title=message_text[:50]
+            )
             is_conversation_new = True
 
         # The message has to live in the session until the streaming starts. We store it in the session under a key that
@@ -77,12 +95,16 @@ class ChatSendView(View):
         request.session[f"{_PENDING_MSG_SESSION_KEY}_{conversation.pk}"] = message_text
         await request.session.asave()
 
-        return render(request, 'chat.html#send-response', {
-            'message_text': message_text,
-            'is_conversation_new': is_conversation_new,
-            'conversation': conversation,
-            'conversations': [c async for c in request.user.conversations.all()],
-        })
+        return render(
+            request,
+            "chat.html#send-response",
+            {
+                "message_text": message_text,
+                "is_conversation_new": is_conversation_new,
+                "conversation": conversation,
+                "conversations": [c async for c in request.user.conversations.all()],
+            },
+        )
 
 
 class ChatStreamView(View):
@@ -91,11 +113,15 @@ class ChatStreamView(View):
 
         pending = request.session.pop(f"{_PENDING_MSG_SESSION_KEY}_{conv_id}", None)
         if not pending:
-            return HttpResponseBadRequest(f"{request.user.username} sent a message in conv_id={conv_id} but it got lost.")
+            return HttpResponseBadRequest(
+                f"{request.user.username} sent a message in conv_id={conv_id} but it got lost."
+            )
         await request.session.asave()
 
         attachment = await request.user.attachments.afirst()
-        pdf_base64 = await sync_to_async(attachment.read_as_base64)() if attachment else None
+        pdf_base64 = (
+            await sync_to_async(attachment.read_as_base64)() if attachment else None
+        )
 
         async def event_stream():
             async with graph_manager.graph() as graph:
@@ -116,11 +142,16 @@ class ChatStreamView(View):
                         stream_mode="messages",
                     ):
                         msg, metadata = event
-                        if msg.content and metadata.get("langgraph_node") == "call_model":
+                        if (
+                            msg.content
+                            and metadata.get("langgraph_node") == "call_model"
+                        ):
                             content = msg.content
                             if isinstance(content, list):
                                 content = "".join(
-                                    part if isinstance(part, str) else part.get("text", "")
+                                    part
+                                    if isinstance(part, str)
+                                    else part.get("text", "")
                                     for part in content
                                 )
                             if content:
@@ -136,9 +167,11 @@ class ChatStreamView(View):
                     yield "event: error\ndata: An error occurred during streaming\n\n"
                 finally:
                     conversation.last_updated = timezone.now()
-                    await conversation.asave(update_fields=['last_updated'])
+                    await conversation.asave(update_fields=["last_updated"])
 
-        response = StreamingHttpResponse(event_stream(), content_type="text/event-stream")
-        response['Cache-Control'] = 'no-cache'
-        response['X-Accel-Buffering'] = 'no'
+        response = StreamingHttpResponse(
+            event_stream(), content_type="text/event-stream"
+        )
+        response["Cache-Control"] = "no-cache"
+        response["X-Accel-Buffering"] = "no"
         return response

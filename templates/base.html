@@ -1,101 +1,101 @@
 {% load django_vite %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}NutriChat{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     {% vite_hmr_client %}
     {% vite_asset 'frontend/src/js/main.js' %}
-</head>
-<body>
+  </head>
+  <body>
     {% if user.is_authenticated %}
-    <div class="mobile-topbar d-lg-none d-flex align-items-center justify-content-between px-3 py-2 text-white">
+      <div class="mobile-topbar d-lg-none d-flex align-items-center justify-content-between px-3 py-2 text-white">
         <h5 class="mb-0 d-flex align-items-center gap-2">
-            <span class="material-symbols-outlined">restaurant</span>
-            NutriChat
+          <span class="material-symbols-outlined">restaurant</span>
+          NutriChat
         </h5>
         <button class="btn btn-link text-white p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="Toggle navigation">
-            <span class="material-symbols-outlined" style="font-size: 30px;">menu</span>
+          <span class="material-symbols-outlined" style="font-size: 30px;">menu</span>
         </button>
-    </div>
+      </div>
     {% endif %}
-    
+
     <div class="container-fluid">
-        <div class="row flex-nowrap vh-100">
-            {% if user.is_authenticated %}
-            <nav class="sidebar offcanvas-lg offcanvas-start col-md-3 col-lg-2 d-flex flex-column p-3 text-white" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+      <div class="row flex-nowrap vh-100">
+        {% if user.is_authenticated %}
+          <nav class="sidebar offcanvas-lg offcanvas-start col-md-3 col-lg-2 d-flex flex-column p-3 text-white" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
             <div class="sidebar-header mb-4">
-                <h4 class="mb-0 d-flex align-items-center gap-2">
-                    <span class="material-symbols-outlined">restaurant</span>
-                    NutriChat
-                </h4>
+              <h4 class="mb-0 d-flex align-items-center gap-2">
+                <span class="material-symbols-outlined">restaurant</span>
+                NutriChat
+              </h4>
             </div>
 
             <ul class="nav nav-pills flex-column mb-auto">
+              <li class="nav-item">
+                <a href="{% url 'profile' %}" class="nav-link text-white d-flex align-items-center gap-2">
+                  <span class="material-symbols-outlined">person</span>
+                  My Profile
+                </a>
+              </li>
+              {% if request.user.role == "NUTRITIONIST" %}
                 <li class="nav-item">
-                    <a href="{% url 'profile' %}" class="nav-link text-white d-flex align-items-center gap-2">
-                        <span class="material-symbols-outlined">person</span>
-                        My Profile
-                    </a>
+                  <a href="{% url 'customers' %}" class="nav-link text-white d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">group</span>
+                    Customers
+                  </a>
                 </li>
-                {% if request.user.role == "NUTRITIONIST" %}
-                <li class="nav-item">
-                    <a href="{% url 'customers' %}" class="nav-link text-white d-flex align-items-center gap-2">
-                        <span class="material-symbols-outlined">group</span>
-                        Customers
-                    </a>
-                </li>
-                {% endif %}
+              {% endif %}
             </ul>
 
             <hr class="my-3 border-light opacity-25">
 
             {% block sidebar_chat %}
-            {% if user.attachments.exists %}
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
+              {% if user.attachments.exists %}
+                <ul class="nav nav-pills flex-column mb-auto">
+                  <li class="nav-item">
                     <a href="{% url 'chat' %}" class="nav-link text-white d-flex align-items-center gap-2">
-                        <span class="material-symbols-outlined">chat</span>
-                        Chat
+                      <span class="material-symbols-outlined">chat</span>
+                      Chat
                     </a>
-                </li>
-            </ul>
-            {% endif %}
+                  </li>
+                </ul>
+              {% endif %}
             {% endblock sidebar_chat %}
 
             <div class="mt-auto">
-                <a href="{% url 'password_change' %}" class="nav-link text-white d-flex align-items-center gap-2 mb-2">
-                    <span class="material-symbols-outlined">lock</span>
-                    Change password
-                </a>
-                <form action="{% url 'logout' %}" method="post" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-link text-white text-decoration-none p-0 nav-link d-flex align-items-center gap-2">
-                        <span class="material-symbols-outlined">logout</span>
-                        Logout
-                    </button>
-                </form>
+              <a href="{% url 'password_change' %}" class="nav-link text-white d-flex align-items-center gap-2 mb-2">
+                <span class="material-symbols-outlined">lock</span>
+                Change password
+              </a>
+              <form action="{% url 'logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-white text-decoration-none p-0 nav-link d-flex align-items-center gap-2">
+                  <span class="material-symbols-outlined">logout</span>
+                  Logout
+                </button>
+              </form>
             </div>
-        </nav>
+          </nav>
         {% endif %}
 
         <main class="main-content col-md-9 col-lg-10 p-4 overflow-auto">
             {# Messages from the django messages framework will be displayed here #}
-            {% if messages %}
+          {% if messages %}
             <div class="mb-3">
-                {% for message in messages %}
+              {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
-                {% endfor %}
+              {% endfor %}
             </div>
-            {% endif %}
+          {% endif %}
 
-            {% block content %}{% endblock %}
+          {% block content %}{% endblock %}
         </main>
-    </div>
-</body>
-</html>
+      </div>
+    </body>
+  </html>

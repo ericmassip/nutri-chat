@@ -31,11 +31,16 @@ async def test_call_model_full_conversation():
 
     messages = mock_model.ainvoke.call_args[0][0]
     assert messages == [
-        SystemMessage(content=SYSTEM_PROMPT + "\n\nBackground notes on this customer:\nAthlete, 80 kg, lactose intolerant."),
-        HumanMessage(content=[
-            {"type": "text", "text": "Here is the nutritional plan document:"},
-            {"type": "file", "base64": "dGVzdA==", "mime_type": "application/pdf"},
-        ]),
+        SystemMessage(
+            content=SYSTEM_PROMPT
+            + "\n\nBackground notes on this customer:\nAthlete, 80 kg, lactose intolerant."
+        ),
+        HumanMessage(
+            content=[
+                {"type": "text", "text": "Here is the nutritional plan document:"},
+                {"type": "file", "base64": "dGVzdA==", "mime_type": "application/pdf"},
+            ]
+        ),
         HumanMessage(content="What can I eat for breakfast?"),
         AIMessage(content="You can have oats and fruit."),
         HumanMessage(content="What about lunch?"),
@@ -58,10 +63,12 @@ async def test_call_model_with_pdf_base64_only():
     messages = mock_model.ainvoke.call_args[0][0]
     assert messages == [
         SystemMessage(content=SYSTEM_PROMPT),
-        HumanMessage(content=[
-            {"type": "text", "text": "Here is the nutritional plan document:"},
-            {"type": "file", "base64": "dGVzdA==", "mime_type": "application/pdf"},
-        ]),
+        HumanMessage(
+            content=[
+                {"type": "text", "text": "Here is the nutritional plan document:"},
+                {"type": "file", "base64": "dGVzdA==", "mime_type": "application/pdf"},
+            ]
+        ),
         HumanMessage(content="What should I eat?"),
     ]
     assert result == {"messages": [mock_response]}
@@ -81,7 +88,10 @@ async def test_call_model_with_customer_description_only():
 
     messages = mock_model.ainvoke.call_args[0][0]
     assert messages == [
-        SystemMessage(content=SYSTEM_PROMPT + "\n\nBackground notes on this customer:\nDiabetic, 60 kg."),
+        SystemMessage(
+            content=SYSTEM_PROMPT
+            + "\n\nBackground notes on this customer:\nDiabetic, 60 kg."
+        ),
         HumanMessage(content="What are my macros?"),
     ]
     assert result == {"messages": [mock_response]}

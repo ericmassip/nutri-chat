@@ -32,9 +32,9 @@ def generate_answers(model) -> str:
     """
     Step 1: Send PDF + test JSON to model, get filled JSON back.
     """
-    print(f"\n{'='*60}")
-    print(f"Step 1: Generating answers")
-    print(f"{'='*60}\n")
+    print(f"\n{'=' * 60}")
+    print("Step 1: Generating answers")
+    print(f"{'=' * 60}\n")
 
     # Load data
     pdf_base64 = load_pdf_as_base64(PDF_PATH)
@@ -73,8 +73,12 @@ JSON con preguntas:
     if isinstance(response.content, list):
         # Content is a list of blocks, extract text from first text block
         predicted_json = next(
-            (block["text"] for block in response.content if block.get("type") == "text"),
-            ""
+            (
+                block["text"]
+                for block in response.content
+                if block.get("type") == "text"
+            ),
+            "",
         )
     else:
         # Content is a simple string
@@ -92,9 +96,9 @@ def evaluate_answers(model, predicted_json: str) -> dict:
     """
     Step 2: Compare predicted JSON with ground truth using LLM as judge.
     """
-    print(f"\n{'='*60}")
-    print(f"Step 2: Evaluating answers")
-    print(f"{'='*60}\n")
+    print(f"\n{'=' * 60}")
+    print("Step 2: Evaluating answers")
+    print(f"{'=' * 60}\n")
 
     # Load ground truth
     ground_truth = load_json(GROUND_TRUTH_PATH)
@@ -138,14 +142,18 @@ Devuelve SOLAMENTE el JSON, sin explicaciones adicionales."""
     if isinstance(response.content, list):
         # Content is a list of blocks, extract text from first text block
         evaluation_text = next(
-            (block["text"] for block in response.content if block.get("type") == "text"),
-            ""
+            (
+                block["text"]
+                for block in response.content
+                if block.get("type") == "text"
+            ),
+            "",
         )
     else:
         # Content is a simple string
         evaluation_text = response.content
 
-    print(f"\nEvaluación recibida:\n")
+    print("\nEvaluación recibida:\n")
     print(evaluation_text)
 
     # Parse JSON from response
@@ -163,16 +171,19 @@ Devuelve SOLAMENTE el JSON, sin explicaciones adicionales."""
         evaluation = json.loads(evaluation_text)
     except json.JSONDecodeError as e:
         print(f"\nError parsing JSON: {e}")
-        evaluation = {"error": "Could not parse evaluation JSON", "raw": evaluation_text}
+        evaluation = {
+            "error": "Could not parse evaluation JSON",
+            "raw": evaluation_text,
+        }
 
     return evaluation
 
 
 def display_results(evaluation: dict):
     """Display evaluation results in a readable format."""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("RESULTADOS DE LA EVALUACIÓN")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     if "error" in evaluation:
         print(f"Error: {evaluation['error']}")
@@ -182,15 +193,15 @@ def display_results(evaluation: dict):
     print(f"Respuestas correctas: {evaluation.get('correct', 'N/A')}")
     print(f"Respuestas parciales: {evaluation.get('partial', 'N/A')}")
     print(f"Respuestas incorrectas: {evaluation.get('incorrect', 'N/A')}")
-    print(f"\nRazonamiento:")
-    print(evaluation.get('reasoning', 'N/A'))
+    print("\nRazonamiento:")
+    print(evaluation.get("reasoning", "N/A"))
 
     if "examples" in evaluation:
-        print(f"\nEjemplos de respuestas correctas:")
+        print("\nEjemplos de respuestas correctas:")
         for ex in evaluation["examples"].get("correct", [])[:3]:
             print(f"  - {ex}")
 
-        print(f"\nEjemplos de respuestas incorrectas:")
+        print("\nEjemplos de respuestas incorrectas:")
         for ex in evaluation["examples"].get("incorrect", [])[:3]:
             print(f"  - {ex}")
 
@@ -198,7 +209,7 @@ def display_results(evaluation: dict):
 def main():
     """Run the full evaluation pipeline."""
     print("\n🧪 Evaluación de Modelo LLM para Planes Nutricionales")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     # Initialize model (model-agnostic)
     model = init_chat_model("google_genai:gemini-3-flash-preview", temperature=0)

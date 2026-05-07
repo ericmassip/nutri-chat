@@ -9,7 +9,9 @@ from nutrichat.models import Attachment, Conversation, User
 
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Password confirmation", widget=forms.PasswordInput
+    )
 
     class Meta:
         model = User
@@ -34,7 +36,17 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "password", "name", "surname", "role", "nutritionist", "description", "is_active", "is_admin"]
+        fields = [
+            "username",
+            "password",
+            "name",
+            "surname",
+            "role",
+            "nutritionist",
+            "description",
+            "is_active",
+            "is_admin",
+        ]
 
 
 class AttachmentInline(admin.TabularInline):
@@ -46,7 +58,15 @@ class AttachmentInline(admin.TabularInline):
 class UserAdmin(BaseUserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ["username", "name", "surname", "role", "nutritionist", "is_active", "is_admin"]
+    list_display = [
+        "username",
+        "name",
+        "surname",
+        "role",
+        "nutritionist",
+        "is_active",
+        "is_admin",
+    ]
     list_filter = ["role", "is_active"]
     fieldsets = [
         (None, {"fields": ["username", "password"]}),
@@ -55,7 +75,19 @@ class UserAdmin(BaseUserAdmin):
         ("Permissions", {"fields": ["is_active", "is_admin"]}),
     ]
     add_fieldsets = [
-        (None, {"classes": ["wide"], "fields": ["username", "role", "nutritionist", "password1", "password2"]}),
+        (
+            None,
+            {
+                "classes": ["wide"],
+                "fields": [
+                    "username",
+                    "role",
+                    "nutritionist",
+                    "password1",
+                    "password2",
+                ],
+            },
+        ),
     ]
     search_fields = ["username", "name", "surname"]
     ordering = ["username"]
@@ -68,7 +100,7 @@ admin.site.register(User, UserAdmin)
 
 @admin.register(Conversation)
 class ConversationAdmin(admin.ModelAdmin):
-    list_display = ['title', 'user', 'created', 'last_updated']
-    list_filter = ['created']
-    search_fields = ['title', 'user__username']
-    raw_id_fields = ['user']
+    list_display = ["title", "user", "created", "last_updated"]
+    list_filter = ["created"]
+    search_fields = ["title", "user__username"]
+    raw_id_fields = ["user"]

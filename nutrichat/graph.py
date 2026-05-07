@@ -55,12 +55,12 @@ en lugar de inventar.
 
 
 def _get_db_uri():
-    db = settings.DATABASES['default']
-    user = db.get('USER', '')
-    password = db.get('PASSWORD', '')
-    host = db.get('HOST', 'localhost')
-    port = db.get('PORT', '5432')
-    name = db['NAME']
+    db = settings.DATABASES["default"]
+    user = db.get("USER", "")
+    password = db.get("PASSWORD", "")
+    host = db.get("HOST", "localhost")
+    port = db.get("PORT", "5432")
+    name = db["NAME"]
     if user:
         auth = f"{user}:{password}@" if password else f"{user}@"
     else:
@@ -106,19 +106,29 @@ class GraphManager:
 
         system_content = SYSTEM_PROMPT
         if customer_description:
-            system_content += f"\n\nBackground notes on this customer:\n{customer_description}"
+            system_content += (
+                f"\n\nBackground notes on this customer:\n{customer_description}"
+            )
 
         messages.insert(0, SystemMessage(content=system_content))
 
         if pdf_base64:
-            messages.insert(1, HumanMessage(content=[
-                {"type": "text", "text": "Here is the nutritional plan document:"},
-                {
-                    "type": "file",
-                    "base64": pdf_base64,
-                    "mime_type": "application/pdf",
-                },
-            ]))
+            messages.insert(
+                1,
+                HumanMessage(
+                    content=[
+                        {
+                            "type": "text",
+                            "text": "Here is the nutritional plan document:",
+                        },
+                        {
+                            "type": "file",
+                            "base64": pdf_base64,
+                            "mime_type": "application/pdf",
+                        },
+                    ]
+                ),
+            )
 
         model = self._get_model()
         response = await model.ainvoke(messages)

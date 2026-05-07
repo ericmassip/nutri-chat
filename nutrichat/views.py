@@ -14,8 +14,8 @@ from nutrichat.models import User
 
 def home_view(request):
     if request.user.role == User.Role.NUTRITIONIST:
-        return redirect('customers')
-    return render(request, 'home.html')
+        return redirect("customers")
+    return render(request, "home.html")
 
 
 class CustomerTable(tables.Table):
@@ -31,7 +31,7 @@ class CustomerTable(tables.Table):
             return format_html(
                 '<a href="{}" target="_blank">'
                 '<span class="material-symbols-outlined" style="font-size:20px;">description</span>'
-                '</a>',
+                "</a>",
                 attachment.file.url,
             )
         return mark_safe(
@@ -42,8 +42,8 @@ class CustomerTable(tables.Table):
         return format_html(
             '<a href="{}" style="color: var(--verde-eucalipto);">'
             '<span class="material-symbols-outlined" style="font-size:20px;">edit</span>'
-            '</a>',
-            reverse('customer-edit', kwargs={'id': record.pk}),
+            "</a>",
+            reverse("customer-edit", kwargs={"id": record.pk}),
         )
 
     class Meta:
@@ -67,33 +67,33 @@ class ProfileEditView(SuccessMessageMixin, UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['editor'] = self.request.user
+        kwargs["editor"] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['attachment'] = self.object.attachments.first()
+        context["attachment"] = self.object.attachments.first()
         return context
 
 
 class CustomerEditView(NutritionistOwnsCustomerMixin, ProfileEditView):
     def get_object(self, queryset=None):
-        return get_object_or_404(User, pk=self.kwargs['id'], role=User.Role.CUSTOMER)
+        return get_object_or_404(User, pk=self.kwargs["id"], role=User.Role.CUSTOMER)
 
 
 class CustomerCreateView(NutritionistRequiredMixin, SuccessMessageMixin, CreateView):
     model = User
     form_class = CustomerCreateForm
-    template_name = 'customer_create.html'
+    template_name = "customer_create.html"
     success_message = "Customer created successfully"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['nutritionist'] = self.request.user
+        kwargs["nutritionist"] = self.request.user
         return kwargs
 
     def get_success_url(self):
-        return reverse('customer-edit', kwargs={'id': self.object.pk})
+        return reverse("customer-edit", kwargs={"id": self.object.pk})
 
 
 class CustomerRemoveView(NutritionistOwnsCustomerMixin, View):
@@ -101,7 +101,7 @@ class CustomerRemoveView(NutritionistOwnsCustomerMixin, View):
         customer = get_object_or_404(User, pk=id, role=User.Role.CUSTOMER)
         customer.is_active = False
         customer.save()
-        return redirect(reverse('customers'))
+        return redirect(reverse("customers"))
 
 
 class CustomersView(NutritionistRequiredMixin, tables.SingleTableView):
@@ -109,4 +109,6 @@ class CustomersView(NutritionistRequiredMixin, tables.SingleTableView):
     template_name = "customers.html"
 
     def get_queryset(self):
-        return self.request.user.customers.filter(is_active=True).prefetch_related('attachments')
+        return self.request.user.customers.filter(is_active=True).prefetch_related(
+            "attachments"
+        )

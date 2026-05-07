@@ -7,40 +7,91 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('username', models.EmailField(max_length=255, unique=True, verbose_name='email address')),
-                ('name', models.CharField(blank=True, max_length=150)),
-                ('surname', models.CharField(blank=True, max_length=150)),
-                ('role', models.CharField(blank=True, choices=[('NUTRITIONIST', 'Nutritionist'), ('CUSTOMER', 'Customer')], max_length=20)),
-                ('description', markdownx.models.MarkdownxField(blank=True)),
-                ('is_active', models.BooleanField(default=True)),
-                ('is_admin', models.BooleanField(default=False)),
-                ('nutritionist', models.ForeignKey(blank=True, limit_choices_to={'role': 'NUTRITIONIST'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='customers', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "username",
+                    models.EmailField(
+                        max_length=255, unique=True, verbose_name="email address"
+                    ),
+                ),
+                ("name", models.CharField(blank=True, max_length=150)),
+                ("surname", models.CharField(blank=True, max_length=150)),
+                (
+                    "role",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("NUTRITIONIST", "Nutritionist"),
+                            ("CUSTOMER", "Customer"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("description", markdownx.models.MarkdownxField(blank=True)),
+                ("is_active", models.BooleanField(default=True)),
+                ("is_admin", models.BooleanField(default=False)),
+                (
+                    "nutritionist",
+                    models.ForeignKey(
+                        blank=True,
+                        limit_choices_to={"role": "NUTRITIONIST"},
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="customers",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Attachment',
+            name="Attachment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to='attachments/%Y-%m/')),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('last_updated', models.DateTimeField(auto_now=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='attachments', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("file", models.FileField(upload_to="attachments/%Y-%m/")),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("last_updated", models.DateTimeField(auto_now=True)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="attachments",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
