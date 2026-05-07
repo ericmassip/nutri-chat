@@ -60,9 +60,27 @@
       <div id="chat-messages" class="chat-messages">
         {% if not messages_list %}
           <div id="empty-state" class="d-flex align-items-center justify-content-center h-100 text-muted">
-            <div class="text-center">
+            <div class="text-center empty-state-content">
               <span class="material-symbols-outlined" style="font-size: 48px;">chat_bubble_outline</span>
-              <p class="mt-2">Send a message to start the conversation.</p>
+              <p class="mt-2 mb-1">Pregúntame lo que quieras sobre tu plan nutricional.</p>
+              <p class="small mb-3">Por ejemplo:</p>
+              <div class="suggestion-chips">
+                <button type="button" class="suggestion-chip"
+                        data-suggestion="Dame una idea de receta para la cena de hoy.">
+                  <span class="material-symbols-outlined">restaurant</span>
+                  Idea de receta para la cena
+                </button>
+                <button type="button" class="suggestion-chip"
+                        data-suggestion="¿Cuánto arroz debería usar para 3 comidas?">
+                  <span class="material-symbols-outlined">scale</span>
+                  ¿Cuánto arroz debería usar para 3 comidas?
+                </button>
+                <button type="button" class="suggestion-chip"
+                        data-suggestion="¿Debería tomar algo pre o post entreno?">
+                  <span class="material-symbols-outlined">menu_book</span>
+                  ¿Debería tomar algo pre o post entreno?
+                </button>
+              </div>
             </div>
           </div>
 
@@ -147,6 +165,17 @@
             window.htmx.trigger(form, 'submit')
           }
         }
+      })
+
+      // Suggestion chips on the empty state: fill the textarea with the suggestion and submit the form.
+      document.addEventListener('click', (e) => {
+        const chip = e.target.closest('.suggestion-chip')
+        if (!chip) return
+        const textarea = document.querySelector('.chat-input')
+        if (!textarea) return
+        textarea.value = chip.dataset.suggestion
+        const form = textarea.closest('form')
+        if (form) window.htmx.trigger(form, 'submit')
       })
     })()
   </script>

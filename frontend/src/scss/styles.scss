@@ -73,6 +73,43 @@ body {
     background: #fff;
 }
 
+.empty-state-content {
+    max-width: 32rem;
+}
+
+.suggestion-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.suggestion-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 999px;
+    color: #495057;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+
+    .material-symbols-outlined {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+
+    &:hover {
+        background: #f1f3f5;
+        border-color: #ced4da;
+        color: #212529;
+    }
+}
+
 /* Sidebar conversation list */
 .sidebar-conversations {
     overflow-y: auto;

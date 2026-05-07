@@ -29,3 +29,7 @@ staticfiles
 
 # Environment variables
 .env
+
+# ADR and plans not pushed to version control for now
+docs/adr
+docs/plans
