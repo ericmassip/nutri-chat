@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
-  <h1>Welcome {{ user.username }} to NutriChat</h1>
+  <h1>{% blocktrans with username=user.username %}Welcome {{ username }} to NutriChat{% endblocktrans %}</h1>
 {% endblock %}

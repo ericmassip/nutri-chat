@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import transaction
+from django.utils.translation import gettext_lazy
 from markdownx.widgets import MarkdownxWidget
 
 from crispy_forms.helper import FormHelper
@@ -15,7 +16,7 @@ def validate_pdf_content_type(file):
     header = file.read(4)
     file.seek(0)
     if header != b"%PDF":
-        raise ValidationError("Only PDF files are allowed.")
+        raise ValidationError(gettext_lazy("Only PDF files are allowed."))
 
 
 class CustomerEditForm(forms.ModelForm):
@@ -61,7 +62,7 @@ class CustomerCreateForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
     password_confirm = forms.CharField(
-        label="Confirm password",
+        label=gettext_lazy("Confirm password"),
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
 
@@ -85,7 +86,7 @@ class CustomerCreateForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data.get("password") != cleaned_data.get("password_confirm"):
-            self.add_error("password_confirm", "Passwords do not match.")
+            self.add_error("password_confirm", gettext_lazy("Passwords do not match."))
         return cleaned_data
 
     def save(self, commit=True):

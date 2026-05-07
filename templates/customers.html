@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% load django_tables2 %}
+{% load django_tables2 i18n %}
 
 {% block content %}
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0">Customers</h1>
+    <h1 class="mb-0">{% trans "Customers" %}</h1>
     <a href="{% url 'customer-create' %}" class="btn btn-primary d-flex align-items-center gap-1">
       <span class="material-symbols-outlined" style="font-size:18px;">person_add</span>
-      Add customer
+      {% trans "Add customer" %}
     </a>
   </div>
   {% render_table table %}

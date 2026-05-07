@@ -164,6 +164,7 @@ USE_I18N = True
 TIME_ZONE = "UTC"
 USE_THOUSAND_SEPARATOR = True
 USE_TZ = True
+LOCALE_PATHS = (os.path.join(BASE_DIR, "nutrichat", "locale"),)
 
 
 # Static files (CSS, JavaScript, Images)

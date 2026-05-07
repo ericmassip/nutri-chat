@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% load static %}
-{% block title %}Chat - NutriChat{% endblock %}
+{% load static i18n %}
+{% block title %}{% trans "Chat" %} - NutriChat{% endblock %}
 
 {% partialdef send-response %}
   {% load static %}
@@ -15,7 +15,7 @@
       <span class="material-symbols-outlined">nutrition</span>
     </div>
     <div class="message-bubble assistant-bubble">
-      <img class="typing-indicator" src="{% static 'svg/three-dots.svg' %}" width="40" alt="Loading...">
+      <img class="typing-indicator" src="{% static 'svg/three-dots.svg' %}" width="40" alt="{% trans 'Loading...' %}">
       <div class="streaming-content" sse-swap="token" hx-swap="innerHTML"></div>
     </div>
   </div>
@@ -36,7 +36,7 @@
     <a href="{% url 'chat' %}"
        class="nav-link text-white d-flex align-items-center gap-2 py-1 px-2 flex-grow-1">
       <span class="material-symbols-outlined">add_comment</span>
-      New Chat
+      {% trans "New Chat" %}
     </a>
   </div>
   <div id="conversation-list" class="sidebar-conversations">
@@ -45,10 +45,10 @@
         <a href="{% url 'chat-conversation' conv.pk %}"
            class="sidebar-conversation-item {% if conversation and conversation.pk == conv.pk %}active{% endif %}">
           <span class="material-symbols-outlined" style="font-size: 18px;">chat</span>
-          <span class="text-truncate">{{ conv.title|default:"New conversation" }}</span>
+          <span class="text-truncate">{{ conv.title|default:_("New conversation") }}</span>
         </a>
       {% empty %}
-        <p class="text-white-50 small px-2">No conversations yet.</p>
+        <p class="text-white-50 small px-2">{% trans "No conversations yet." %}</p>
       {% endfor %}
     {% endpartialdef %}
   </div>
@@ -62,23 +62,26 @@
           <div id="empty-state" class="d-flex align-items-center justify-content-center h-100 text-muted">
             <div class="text-center empty-state-content">
               <span class="material-symbols-outlined" style="font-size: 48px;">chat_bubble_outline</span>
-              <p class="mt-2 mb-1">Pregúntame lo que quieras sobre tu plan nutricional.</p>
-              <p class="small mb-3">Por ejemplo:</p>
+              {% blocktrans asvar suggestion_dinner %}Give me a recipe idea for tonight's dinner.{% endblocktrans %}
+              {% blocktrans asvar suggestion_rice %}How much rice should I use for 3 meals?{% endblocktrans %}
+              {% blocktrans asvar suggestion_workout %}Should I have something pre- or post-workout?{% endblocktrans %}
+              <p class="mt-2 mb-1">{% trans "Ask me anything about your nutritional plan." %}</p>
+              <p class="small mb-3">{% trans "For example:" %}</p>
               <div class="suggestion-chips">
                 <button type="button" class="suggestion-chip"
-                        data-suggestion="Dame una idea de receta para la cena de hoy.">
+                        data-suggestion="{{ suggestion_dinner }}">
                   <span class="material-symbols-outlined">restaurant</span>
-                  Idea de receta para la cena
+                  {% trans "Recipe idea for dinner" %}
                 </button>
                 <button type="button" class="suggestion-chip"
-                        data-suggestion="¿Cuánto arroz debería usar para 3 comidas?">
+                        data-suggestion="{{ suggestion_rice }}">
                   <span class="material-symbols-outlined">scale</span>
-                  ¿Cuánto arroz debería usar para 3 comidas?
+                  {{ suggestion_rice }}
                 </button>
                 <button type="button" class="suggestion-chip"
-                        data-suggestion="¿Debería tomar algo pre o post entreno?">
+                        data-suggestion="{{ suggestion_workout }}">
                   <span class="material-symbols-outlined">menu_book</span>
-                  ¿Debería tomar algo pre o post entreno?
+                  {{ suggestion_workout }}
                 </button>
               </div>
             </div>
@@ -122,7 +125,7 @@
             <div class="input-group">
               <textarea name="message"
                         class="form-control chat-input"
-                        placeholder="Type your message..."
+                        placeholder="{% trans 'Type your message...' %}"
                         rows="1"
                         required></textarea>
               <button type="submit" class="btn btn-success">

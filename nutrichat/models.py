@@ -4,6 +4,7 @@ import logging
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.utils.translation import gettext_lazy
 from markdownx.models import MarkdownxField
 
 log = logging.getLogger(__name__)
@@ -12,7 +13,7 @@ log = logging.getLogger(__name__)
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         if not username:
-            raise ValueError("Users must have an email address")
+            raise ValueError(gettext_lazy("Users must have an email address"))
 
         user = self.model(
             username=self.normalize_email(username).lower(),
@@ -31,16 +32,20 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     class Role(models.TextChoices):
-        NUTRITIONIST = "NUTRITIONIST", "Nutritionist"
-        CUSTOMER = "CUSTOMER", "Customer"
+        NUTRITIONIST = "NUTRITIONIST", gettext_lazy("Nutritionist")
+        CUSTOMER = "CUSTOMER", gettext_lazy("Customer")
 
     username = models.EmailField(
-        verbose_name="email address",
+        verbose_name=gettext_lazy("Username"),
         max_length=255,
         unique=True,
     )
-    name = models.CharField(max_length=150, blank=True)
-    surname = models.CharField(max_length=150, blank=True)
+    name = models.CharField(
+        max_length=150, blank=True, verbose_name=gettext_lazy("Name")
+    )
+    surname = models.CharField(
+        max_length=150, blank=True, verbose_name=gettext_lazy("Surname")
+    )
     role = models.CharField(max_length=20, choices=Role, blank=True)
     nutritionist = models.ForeignKey(
         "self",
@@ -49,8 +54,9 @@ class User(AbstractBaseUser):
         on_delete=models.SET_NULL,
         related_name="customers",
         limit_choices_to={"role": Role.NUTRITIONIST},
+        verbose_name=gettext_lazy("Nutritionist"),
     )
-    description = MarkdownxField(blank=True)
+    description = MarkdownxField(blank=True, verbose_name=gettext_lazy("Description"))
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
@@ -85,16 +91,20 @@ class Conversation(models.Model):
         related_name="conversations",
     )
     title = models.CharField(
-        max_length=255, blank=True
+        max_length=255,
+        blank=True,
+        verbose_name=gettext_lazy("Title"),
     )  # Auto-generated from first message
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-last_updated"]
+        verbose_name = gettext_lazy("Conversation")
+        verbose_name_plural = gettext_lazy("Conversations")
 
     def __str__(self):
-        return self.title or f"Conversation {self.pk}"
+        return self.title or gettext_lazy("Conversation %(pk)s") % {"pk": self.pk}
 
 
 class Attachment(models.Model):
@@ -106,6 +116,10 @@ class Attachment(models.Model):
     file = models.FileField(upload_to="attachments/%Y-%m/")
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = gettext_lazy("Attachment")
+        verbose_name_plural = gettext_lazy("Attachments")
 
     def read_as_base64(self) -> str | None:
         try:

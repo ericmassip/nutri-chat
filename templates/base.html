@@ -1,4 +1,4 @@
-{% load django_vite %}
+{% load django_vite i18n %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,7 +16,7 @@
           <span class="material-symbols-outlined">restaurant</span>
           NutriChat
         </h5>
-        <button class="btn btn-link text-white p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="Toggle navigation">
+        <button class="btn btn-link text-white p-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="{% trans 'Toggle navigation' %}">
           <span class="material-symbols-outlined" style="font-size: 30px;">menu</span>
         </button>
       </div>
@@ -37,14 +37,14 @@
               <li class="nav-item">
                 <a href="{% url 'profile' %}" class="nav-link text-white d-flex align-items-center gap-2">
                   <span class="material-symbols-outlined">person</span>
-                  My Profile
+                  {% trans "My Profile" %}
                 </a>
               </li>
               {% if request.user.role == "NUTRITIONIST" %}
                 <li class="nav-item">
                   <a href="{% url 'customers' %}" class="nav-link text-white d-flex align-items-center gap-2">
                     <span class="material-symbols-outlined">group</span>
-                    Customers
+                    {% trans "Customers" %}
                   </a>
                 </li>
               {% endif %}
@@ -58,7 +58,7 @@
                   <li class="nav-item">
                     <a href="{% url 'chat' %}" class="nav-link text-white d-flex align-items-center gap-2">
                       <span class="material-symbols-outlined">chat</span>
-                      Chat
+                      {% trans "Chat" %}
                     </a>
                   </li>
                 </ul>
@@ -68,13 +68,13 @@
             <div class="mt-auto">
               <a href="{% url 'password_change' %}" class="nav-link text-white d-flex align-items-center gap-2 mb-2">
                 <span class="material-symbols-outlined">lock</span>
-                Change password
+                {% trans "Change password" %}
               </a>
               <form action="{% url 'logout' %}" method="post" class="d-inline">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link text-white text-decoration-none p-0 nav-link d-flex align-items-center gap-2">
                   <span class="material-symbols-outlined">logout</span>
-                  Logout
+                  {% trans "Logout" %}
                 </button>
               </form>
             </div>

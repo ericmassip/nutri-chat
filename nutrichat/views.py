@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView
 import django_tables2 as tables
@@ -22,8 +23,12 @@ class CustomerTable(tables.Table):
     name = tables.Column()
     surname = tables.Column()
     username = tables.Column()
-    plan = tables.Column(empty_values=(), orderable=False, verbose_name="Plan")
-    edit = tables.Column(empty_values=(), orderable=False, verbose_name="Edit")
+    plan = tables.Column(
+        empty_values=(), orderable=False, verbose_name=gettext_lazy("Plan")
+    )
+    edit = tables.Column(
+        empty_values=(), orderable=False, verbose_name=gettext_lazy("Edit")
+    )
 
     def render_plan(self, record):
         attachment = record.attachments.first()
@@ -49,7 +54,7 @@ class CustomerTable(tables.Table):
     class Meta:
         model = User
         fields = ("name", "surname", "username", "plan", "edit")
-        empty_text = "No customers yet."
+        empty_text = gettext_lazy("No customers yet.")
         attrs = {"class": "table table-striped"}
 
 
@@ -57,7 +62,7 @@ class ProfileEditView(SuccessMessageMixin, UpdateView):
     model = User
     form_class = CustomerEditForm
     template_name = "customer_edit.html"
-    success_message = "%(name)s %(surname)s was updated successfully"
+    success_message = gettext_lazy("%(name)s %(surname)s was updated successfully")
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -85,7 +90,7 @@ class CustomerCreateView(NutritionistRequiredMixin, SuccessMessageMixin, CreateV
     model = User
     form_class = CustomerCreateForm
     template_name = "customer_create.html"
-    success_message = "Customer created successfully"
+    success_message = gettext_lazy("Customer created successfully")
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

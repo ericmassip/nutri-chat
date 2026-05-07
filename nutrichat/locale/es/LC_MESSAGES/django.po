@@ -1,0 +1,185 @@
+# Spanish translations for NutriChat.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-07 14:34+0000\n"
+"PO-Revision-Date: 2026-05-07 14:15+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Only PDF files are allowed."
+msgstr "Solo se permiten archivos PDF."
+
+msgid "Confirm password"
+msgstr "Confirmar contraseña"
+
+msgid "Passwords do not match."
+msgstr "Las contraseñas no coinciden."
+
+msgid "Users must have an email address"
+msgstr "Los usuarios deben tener una dirección de correo electrónico"
+
+msgid "Nutritionist"
+msgstr "Nutricionista"
+
+msgid "Customer"
+msgstr "Cliente"
+
+msgid "Username"
+msgstr "Nombre de usuario"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Surname"
+msgstr "Apellido"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Conversation"
+msgstr "Conversación"
+
+msgid "Conversations"
+msgstr "Conversaciones"
+
+#, python-format
+msgid "Conversation %(pk)s"
+msgstr "Conversación %(pk)s"
+
+msgid "Attachment"
+msgstr "Adjunto"
+
+msgid "Attachments"
+msgstr "Adjuntos"
+
+msgid "Plan"
+msgstr "Plan"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "No customers yet."
+msgstr "Aún no hay clientes."
+
+#, python-format
+msgid "%(name)s %(surname)s was updated successfully"
+msgstr "%(name)s %(surname)s se actualizó correctamente"
+
+msgid "Customer created successfully"
+msgstr "Cliente creado correctamente"
+
+msgid "Toggle navigation"
+msgstr "Mostrar/ocultar navegación"
+
+msgid "My Profile"
+msgstr "Mi perfil"
+
+msgid "Customers"
+msgstr "Clientes"
+
+msgid "Chat"
+msgstr "Chat"
+
+msgid "Change password"
+msgstr "Cambiar contraseña"
+
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+msgid "Loading..."
+msgstr "Cargando..."
+
+msgid "New Chat"
+msgstr "Nuevo Chat"
+
+msgid "New conversation"
+msgstr "Nueva conversación"
+
+msgid "No conversations yet."
+msgstr "Aún no hay conversaciones."
+
+msgid "Give me a recipe idea for tonight's dinner."
+msgstr "Dame una idea de receta para la cena de hoy."
+
+msgid "How much rice should I use for 3 meals?"
+msgstr "¿Cuánto arroz debería usar para 3 comidas?"
+
+msgid "Should I have something pre- or post-workout?"
+msgstr "¿Debería tomar algo pre o post entreno?"
+
+msgid "Ask me anything about your nutritional plan."
+msgstr "Pregúntame lo que quieras sobre tu plan nutricional."
+
+msgid "For example:"
+msgstr "Por ejemplo:"
+
+msgid "Recipe idea for dinner"
+msgstr "Idea de receta para la cena"
+
+msgid "Type your message..."
+msgstr "Escribe tu mensaje..."
+
+msgid "New Customer"
+msgstr "Nuevo cliente"
+
+msgid "Create"
+msgstr "Crear"
+
+msgid "Remove customer"
+msgstr "Eliminar cliente"
+
+msgid "Email"
+msgstr "Correo electrónico"
+
+msgid "Nutritional plan (PDF)"
+msgstr "Plan nutricional (PDF)"
+
+msgid "Download current plan"
+msgstr "Descargar plan actual"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Add customer"
+msgstr "Añadir cliente"
+
+#, python-format
+msgid "Welcome %(username)s to NutriChat"
+msgstr "Bienvenida/o %(username)s a NutriChat"
+
+msgid "Login"
+msgstr "Iniciar sesión"
+
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+"Tu nombre de usuario y contraseña no coinciden. Por favor, inténtalo de "
+"nuevo."
+
+msgid ""
+"Your account doesn't have access to this page. To proceed, please login with "
+"an account that has access."
+msgstr ""
+"Tu cuenta no tiene acceso a esta página. Para continuar, inicia sesión con "
+"una cuenta que tenga acceso."
+
+msgid "Please login to see this page."
+msgstr "Por favor, inicia sesión para ver esta página."
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Forgot password?"
+msgstr "¿Olvidaste tu contraseña?"
