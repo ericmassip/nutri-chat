@@ -1,6 +1,6 @@
 # NutriChat
 
-A web application that enables nutritionists to share nutritional plans with their clients through an interactive chat interface.
+A Django web app that enables nutritionists to share nutritional plans with their clients through an LLM-powered chat interface built with HTMX and server sent events
 
 ### Overview
 
